@@ -405,7 +405,9 @@ class iContactApi {
 				} elseif (!is_string($mPostData) || !file_exists($mPostData)) {
 					// Not a file, so we assume this is just data
 					curl_setopt($rHandle, CURLOPT_CUSTOMREQUEST, "PUT");
-					curl_setopt($rHandle, CURLOPT_POSTFIELDS, $mPostData);
+					curl_setopt($rHandle, CURLOPT_POSTFIELDS, json_encode($mPostData));
+					// Set the request JSON
+					$this->sLastRequest = (string) json_encode($mPostData);
 				} else {
 					$rFileContentHandle = fopen($mPostData, 'r');
 					if ($rFileContentHandle === false) {
@@ -526,6 +528,30 @@ class iContactApi {
 		), 'subscriptions');
 		// Return the subscription
 		return $aSubscriptions;
+	}
+
+	/**
+	 * This method moves a contact to another list
+	 * @access public
+	 * @param string $sSubscriptionId
+	 * @param integer $iListId
+	 * @param string  $sStatus
+	 * @return object
+	 **/
+	public function moveSubscriptionToList($sSubscriptionId, $iListId, $sStatus = 'normal') {
+		// Valid statuses
+		$aValidStatuses = array('normal', 'pending', 'unsubscribed');
+		// Check for a valid status
+		if (!empty($sStatus) && !in_array($sStatus, $aValidStatuses)) {
+			$sStatus = 'normal';
+		}
+		// Setup the subscription and make the call
+		$aSubscription = $this->makeCall("/a/{$this->setAccountId()}/c/{$this->setClientFolderId()}/subscriptions/{$sSubscriptionId}", 'PUT', array(			
+  		    	'listId'    => $iListId,
+			'status'    => $sStatus
+		), 'subscription');
+		// Return the subscription
+		return $aSubscription;
 	}
 
 	/**
