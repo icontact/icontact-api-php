@@ -29,6 +29,8 @@ try {
 	var_dump($oiContact->addList('somelist', 1698, true, false, false, 'Just an example list', 'Some List'));
 	// Subscribe contact to list
 	var_dump($oiContact->subscribeContactToList(42094396, 179962, 'normal'));
+	// Move contact to another list
+	var_dump($oiContact->moveSubscriptionToList("179962_42094396", 179963, 'normal'));
 	// Grab all campaigns
 	var_dump($oiContact->getCampaigns());
 	// Create message
