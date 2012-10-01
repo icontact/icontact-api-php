@@ -117,89 +117,25 @@ class iContactApi {
 	 * This method adds a contact to your iContact account
 	 * @access public
 	 * @param string $sEmail
+     * @param array [$aAccountData]
 	 * @param string [$sStatus]
-	 * @param string [$sPrefix]
-	 * @param string [$sFirstName]
-	 * @param string [$sLastName]
-	 * @param string [$sSuffix]
-	 * @param string [$sStreet]
-	 * @param string [$sStreet2]
-	 * @param string [$sCity]
-	 * @param string [$sState]
-	 * @param string [$sPostalCode]
-	 * @param string [$sPhone]
-	 * @param string [$sFax]
-	 * @param string [$sBusiness]
-	 *
 	 * @return object
 	**/
-	public function addContact($sEmail, $sStatus = 'normal', $sPrefix = null, $sFirstName = null, $sLastName = null, $sSuffix = null, $sStreet = null, $sStreet2 = null, $sCity = null, $sState = null, $sPostalCode = null, $sPhone = null, $sFax = null, $sBusiness = null) {
+	public function addContact($sEmail, $aAccountData =  array(), $sStatus = 'normal') {
 		// Valid statuses
 		$aValidStatuses = array('normal', 'bounced', 'donotcontact', 'pending', 'invitable', 'deleted');
 		// Contact placeholder
 		$aContact       = array(
 			'email' => $sEmail
 		);
-		// Check for a prefix
-		if (!empty($sPrefix)) {
-			// Add the new prefix
-			$aContact['prefix'] = (string) $sPrefix;
+		
+		// Add extra data from the aAccountData array
+		// Note that this assumes an array structure where the key is the fieldname and
+		// that the fieldname exists in icontact either as a standard or custom field
+		foreach ($aAccountData as $sFieldName => $sValue) {
+		  $aContact[$sFieldName] = (string) $sValue;
 		}
-		// Check for a first name
-		if (!empty($sFirstName)) {
-			// Add the new first name
-			$aContact['firstName'] = (string) $sFirstName;
-		}
-		// Check for a last name
-		if (!empty($sLastName)) {
-			// Add the new last name
-			$aContact['lastName'] = (string) $sLastName;
-		}
-		// Check for a suffix
-		if (!empty($sSuffix)) {
-			// Add the new suffix
-			$aContact['suffix'] = (string) $sSuffix;
-		}
-		// Check for a street
-		if (!empty($sStreet)) {
-			// Add the new street
-			$aContact['street'] = (string) $sStreet;
-		}
-		// Check for a street2
-		if (!empty($sStreet2)) {
-			// Add the new street 2
-			$aContact['street2'] = (string) $sStreet2;
-		}
-		// Check for a city
-		if (!empty($sCity)) {
-			// Add the new city
-			$aContact['city'] = (string) $sCity;
-		}
-		// Check for a state
-		if (!empty($sState)) {
-			// Add the new state
-			$aContact['state'] = (string) $sState;
-		}
-		// Check for a postal code
-		if (!empty($sPostalCode)) {
-			// Add the new postal code
-			$aContact['postalCode'] = (string) $sPostalCode;
-		}
-		// Check for a phone number
-		if (!empty($sPhone)) {
-			// Add the new phone number
-			$aContact['phone'] = (string) $sPhone;
-		}
-		// Check for a fax number
-		if (!empty($sFax)) {
-			// Add the new fax number
-			$aContact['fax'] = (string) $sFax;
-		}
-		// Check for a business name
-		if (!empty($sBusiness)) {
-			// Add the new business
-			$aContact['business'] = (string) $sBusiness;
-		}
+		
 		// Check for a valid status
 		if (!empty($sStatus) && in_array($sStatus, $aValidStatuses)) {
 			// Add the new status
