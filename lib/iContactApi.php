@@ -388,13 +388,9 @@ class iContactApi {
 					// POST data to send to the API
 					$this->addError('No POST data was provided.');
 				} else {
-					// Tell our handle that 
-					// we want to send data
-					curl_setopt($rHandle, CURLOPT_POST, true);
-					// Give our handle the data
-					curl_setopt($rHandle, CURLOPT_POSTFIELDS, json_encode($mPostData));
-					// Set the request JSON
 					$this->sLastRequest = (string) json_encode($mPostData);
+					curl_setopt($rHandle, CURLOPT_POST, true);
+					curl_setopt($rHandle, CURLOPT_POSTFIELDS, $this->sLastRequest);
 				}
 			break;
 			// Uploading data
@@ -404,8 +400,9 @@ class iContactApi {
 					$this->addError('No file or data specified for PUT request');
 				} elseif (!is_string($mPostData) || !file_exists($mPostData)) {
 					// Not a file, so we assume this is just data
+					$this->sLastRequest = (string) json_encode($mPostData);
 					curl_setopt($rHandle, CURLOPT_CUSTOMREQUEST, "PUT");
-					curl_setopt($rHandle, CURLOPT_POSTFIELDS, $mPostData);
+					curl_setopt($rHandle, CURLOPT_POSTFIELDS, $this->sLastRequest);
 				} else {
 					$rFileContentHandle = fopen($mPostData, 'r');
 					if ($rFileContentHandle === false) {
