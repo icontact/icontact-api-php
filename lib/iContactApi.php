@@ -662,7 +662,7 @@ class iContactApi {
 				// has finished uploading
 				if ($aUpload->status != 'receiving') {
 					// Return the upload
-					return $this->makeCall("/a/{$this->setAccountId()}/c{$this->setClientFolderId()}/uploads/{$iUploadId}/data", 'GET');
+					return $this->makeCall("/a/{$this->setAccountId()}/c/{$this->setClientFolderId()}/uploads/{$iUploadId}/data", 'GET');
 				}
 			}
 		}
@@ -949,7 +949,7 @@ class iContactApi {
 	**/
 	public function getUpload($iUploadId) {
 		// Return the upload data
-		return $this->makeCall("/a/{$this->setAccountId()}/c{$this->setClientFolderId()}/uploads/{$iUploadId}/data");
+		return $this->makeCall("/a/{$this->setAccountId()}/c/{$this->setClientFolderId()}/uploads/{$iUploadId}/data");
 	}
 
 	/**
@@ -960,7 +960,7 @@ class iContactApi {
 	**/
 	public function getUploads() {
 		// Return the uploads
-		return $this->makeCall("/a/{$this->setAccountId()}/c{$this->setClientFolderId()}/uploads");
+		return $this->makeCall("/a/{$this->setAccountId()}/c/{$this->setClientFolderId()}/uploads");
 	}
 
 	/**
